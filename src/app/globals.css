@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Material Symbols (icon font used across the Stitch designs) */
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-image: radial-gradient(
+      circle at top right,
+      rgba(232, 146, 109, 0.05),
+      transparent 40%
+    ),
+    radial-gradient(circle at bottom left, rgba(251, 222, 190, 0.1), transparent 40%);
+  background-attachment: fixed;
+}
+
+/* Respect users who prefer reduced motion — calm should never mean nauseating */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@layer components {
+  .material-symbols-outlined {
+    font-family: "Material Symbols Outlined";
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  }
+  .icon-fill {
+    font-variation-settings: "FILL" 1;
+  }
+
+  /* Frosted-glass card — opacity 40-70% + 12-20px blur per design spec */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.4);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px 0 rgba(232, 146, 109, 0.05);
+  }
+  .glass-card-strong {
+    background: rgba(255, 255, 255, 0.6);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px 0 rgba(232, 146, 109, 0.05);
+  }
+
+  /* Long, diffused, terracotta-tinted ambient glow (never harsh black shadow) */
+  .ambient-glow {
+    box-shadow: 0 0 40px rgba(232, 146, 109, 0.15);
+  }
+
+  .input-soft {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid #d9c2b9;
+    transition: all 0.3s ease;
+  }
+  .input-soft:focus {
+    outline: none;
+    border-color: #914b2c;
+    box-shadow: 0 0 0 4px rgba(232, 146, 109, 0.1);
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Mood slider — large circular handle that grows on interaction (per design spec) */
+.zen-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 10px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #fbdebe, #e8926d);
+  outline: none;
+}
+.zen-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: #914b2c;
+  border: 3px solid #fcf9f4;
+  box-shadow: 0 2px 10px rgba(145, 75, 44, 0.3);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.zen-range::-webkit-slider-thumb:hover,
+.zen-range:active::-webkit-slider-thumb {
+  transform: scale(1.18);
+}
+.zen-range::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  background: #914b2c;
+  border: 3px solid #fcf9f4;
+  box-shadow: 0 2px 10px rgba(145, 75, 44, 0.3);
+  cursor: pointer;
+}
+.zen-range:focus-visible::-webkit-slider-thumb {
+  outline: 3px solid rgba(145, 75, 44, 0.4);
+  outline-offset: 2px;
+}
+
+/* Circular wellness gauge fill animation */
+@keyframes circle-progress {
+  0% {
+    stroke-dasharray: 0 100;
+  }
+}
+.circle-progress {
+  animation: circle-progress 2s ease-out forwards;
+}
