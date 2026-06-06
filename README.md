@@ -34,6 +34,8 @@ peer-comparison mechanics**.
 - **Supabase** — Google OAuth + Postgres, Row-Level Security on every table
 - **Anthropic Claude (Haiku)** — insights, companion chat, guided meditations,
   with hand-written deterministic fallbacks so the app works with **no API key**
+- **Vitest** — 25 unit tests across the wellness engine, input validation, and
+  AI safety fallbacks (including crisis detection)
 
 ## Getting started
 
@@ -103,7 +105,21 @@ src/
   components/         AppShell, CheckInForm, MeditationPlayer, gauges, etc.
   lib/
     wellness.ts       pure, tested scoring + insight engine
+    validation.ts     pure input sanitisation shared by actions/routes
     ai.ts             Claude integration with deterministic fallbacks
     supabase/         browser · server · middleware clients
+    *.test.ts         Vitest suites (wellness · validation · ai)
 supabase/schema.sql   database + RLS + signup trigger
 ```
+
+## Testing
+
+```bash
+npm run test
+```
+
+Business logic is deliberately isolated into pure modules (`wellness.ts`,
+`validation.ts`, and the offline branches of `ai.ts`) so it can be tested
+without a database, network, or browser. Coverage focuses on the parts where
+correctness matters most: the scoring maths, the "never trust client input"
+boundary, and crisis detection in the AI companion.

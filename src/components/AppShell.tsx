@@ -31,6 +31,10 @@ export function AppShell({
   const isActive = (href: string) =>
     pathname === href || pathname.startsWith(`${href}/`);
 
+  // The companion chat is a full-height, app-like view — the tall marketing
+  // footer would force the page to scroll and appear mid-conversation.
+  const isImmersive = pathname.startsWith("/companion");
+
   return (
     <div className="relative flex min-h-screen flex-col overflow-x-hidden">
       <AmbientBackground />
@@ -161,7 +165,7 @@ export function AppShell({
         ))}
       </nav>
 
-      <SiteFooter />
+      {!isImmersive && <SiteFooter />}
     </div>
   );
 }

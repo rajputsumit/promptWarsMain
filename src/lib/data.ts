@@ -65,6 +65,38 @@ export async function getMoodLogs(limit = 60): Promise<MoodLog[]> {
   return (data as MoodLog[]) ?? [];
 }
 
+/**
+ * One-shot fetch for the dashboard: a single auth round-trip, then the profile
+ * and mood logs in parallel. Cheaper than calling getProfile()+getMoodLogs()
+ * separately (each of which re-validates the session).
+ */
+export async function getDashboardData(): Promise<{
+  profile: Profile | null;
+  logs: MoodLog[];
+}> {
+  if (!isSupabaseConfigured) return { profile: null, logs: [] };
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { profile: null, logs: [] };
+
+  const [profileRes, logsRes] = await Promise.all([
+    supabase.from("profiles").select("*").eq("id", user.id).maybeSingle(),
+    supabase
+      .from("mood_logs")
+      .select("*")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(30),
+  ]);
+
+  return {
+    profile: (profileRes.data as Profile) ?? null,
+    logs: (logsRes.data as MoodLog[]) ?? [],
+  };
+}
+
 /** Best-effort first name for greetings. */
 export function firstName(profile: Profile | null): string {
   const name = profile?.full_name?.trim();

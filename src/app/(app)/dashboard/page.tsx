@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { WellnessGauge } from "@/components/WellnessGauge";
 import { InsightCard } from "@/components/InsightCard";
-import { getProfile, getMoodLogs, firstName } from "@/lib/data";
+import { getDashboardData, firstName } from "@/lib/data";
 import { computeWellness, moodTrend } from "@/lib/wellness";
 import { clsx } from "@/lib/clsx";
 
@@ -36,7 +36,7 @@ const ICON_COLOR: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
-  const [profile, logs] = await Promise.all([getProfile(), getMoodLogs()]);
+  const { profile, logs } = await getDashboardData();
   const snapshot = computeWellness(logs);
   const trend = moodTrend(logs);
   const name = firstName(profile);

@@ -37,3 +37,9 @@ client_secret*.json
 
 # testing
 /coverage
+
+# playwright / scratch artifacts
+/.playwright-mcp
+*.png
+!src/**/*.png
+!public/**/*.png

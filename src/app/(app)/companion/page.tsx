@@ -22,10 +22,13 @@ export default function CompanionPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([GREETING]);
   const [input, setInput] = useState("");
   const [pending, setPending] = useState(false);
-  const endRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
+  // Scroll only the message list — never the window. Using scrollIntoView here
+  // would scroll the whole page and reveal the footer below the chat.
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
+    const el = listRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [messages, pending]);
 
   async function send(text: string) {
@@ -68,7 +71,7 @@ export default function CompanionPage() {
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-80px)] w-full max-w-3xl flex-col px-container-padding py-6">
+    <div className="mx-auto flex h-[calc(100dvh-80px)] w-full max-w-3xl flex-col px-container-padding py-6 pb-[84px] lg:pb-6">
       <header className="mb-4 flex items-center gap-3">
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary-container">
           <Icon name="spa" filled className="text-on-secondary-container" />
@@ -82,7 +85,12 @@ export default function CompanionPage() {
       </header>
 
       {/* Messages */}
-      <div className="flex-1 space-y-4 overflow-y-auto rounded-lg py-4 hide-scrollbar">
+      <div
+        ref={listRef}
+        aria-live="polite"
+        aria-label="Conversation with your companion"
+        className="flex-1 space-y-4 overflow-y-auto rounded-lg py-4 hide-scrollbar"
+      >
         {messages.map((m, i) => (
           <div
             key={i}
@@ -113,7 +121,6 @@ export default function CompanionPage() {
             </div>
           </div>
         )}
-        <div ref={endRef} />
       </div>
 
       {/* Starters */}
