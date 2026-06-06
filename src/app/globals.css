@@ -2,8 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Material Symbols (icon font used across the Stitch designs) */
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap");
+/* The Material Symbols icon font is loaded via <link> in app/layout.tsx —
+   an @import here would be dropped (must precede @tailwind) and icons would
+   render as literal ligature text. */
 
 :root {
   color-scheme: light;
@@ -47,6 +48,9 @@ body {
     white-space: nowrap;
     word-wrap: normal;
     direction: ltr;
+    -webkit-font-feature-settings: "liga";
+    font-feature-settings: "liga";
+    -webkit-font-smoothing: antialiased;
     font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   }
   .icon-fill {
